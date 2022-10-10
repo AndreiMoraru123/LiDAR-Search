@@ -178,7 +178,7 @@ int main (int argc, char** argv)
     initCamera(setAngle, viewer);
 
     auto* pointProcessorI = new ProcessPointClouds<pcl::PointXYZI>();
-    std::vector<std::filesystem::path> stream = pointProcessorI->streamPcd(R"(D:\\Lidar\\sensors\\data\\pcd\\data_1\\)");
+    std::vector<boost::filesystem::path> stream = pointProcessorI->streamPcd(R"(D:\\Lidar\\sensors\\data\\pcd\\data_1\\)");
     auto streamIterator = stream.begin();
     pcl::PointCloud<pcl::PointXYZI>::Ptr inputCloudI;
 

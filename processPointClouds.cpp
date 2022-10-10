@@ -237,22 +237,22 @@ std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT
 
 }
 
-template<typename PointT>
-std::vector<std::filesystem::path> ProcessPointClouds<PointT>::streamPcd(std::string dataPath)
-{
-
-    std::vector<std::filesystem::path> paths;
-
-    // read from dataPath
-    for (const auto & entry : std::filesystem::directory_iterator(dataPath))
-        paths.push_back(entry.path());
-
-    // sort files in accending order so playback is chronological
-    sort(paths.begin(), paths.end());
-
-    return paths;
-
-}
+//template<typename PointT>
+//std::vector<std::filesystem::path> ProcessPointClouds<PointT>::streamPcd(std::string dataPath)
+//{
+//
+//    std::vector<std::filesystem::path> paths;
+//
+//    // read from dataPath
+//    for (const auto & entry : std::filesystem::directory_iterator(dataPath))
+//        paths.push_back(entry.path());
+//
+//    // sort files in accending order so playback is chronological
+//    sort(paths.begin(), paths.end());
+//
+//    return paths;
+//
+//}
 
 //template<typename PointT>
 //std::vector<boost::filesystem::path> ProcessPointClouds<PointT>::streamPcd(fs::path dataPath)
@@ -267,18 +267,18 @@ std::vector<std::filesystem::path> ProcessPointClouds<PointT>::streamPcd(std::st
 //
 //}
 
-//template <typename PointT>
-//std::vector<boost::filesystem::path> ProcessPointClouds<PointT>::streamPcd(
-//        std::string dataPath) {
-//    std::vector<boost::filesystem::path> paths(
-//            boost::filesystem::directory_iterator{dataPath},
-//            boost::filesystem::directory_iterator{});
-//
-//    // sort files in accending order so playback is chronological
-//    sort(paths.begin(), paths.end());
-//
-//    return paths;
-//}
+template <typename PointT>
+std::vector<boost::filesystem::path> ProcessPointClouds<PointT>::streamPcd(
+        std::string dataPath) {
+    std::vector<boost::filesystem::path> paths(
+            boost::filesystem::directory_iterator{dataPath},
+            boost::filesystem::directory_iterator{});
+
+    // sort files in accending order so playback is chronological
+    sort(paths.begin(), paths.end());
+
+    return paths;
+}
 
 template<typename PointT>
 std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::SegmentPlane3D(typename pcl::PointCloud<PointT>::Ptr cloud, int maxIterations, float distanceThreshold)

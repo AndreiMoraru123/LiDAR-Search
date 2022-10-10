@@ -47,11 +47,11 @@ public:
 
     typename pcl::PointCloud<PointT>::Ptr loadPcd(std::string file);
 
-    std::vector<std::filesystem::path> streamPcd(std::string dataPath);
+//    std::vector<std::filesystem::path> streamPcd(std::string dataPath);
 
 //    std::vector<boost::filesystem::path> streamPcd(fs::path dataPath);
 
-//    std::vector<boost::filesystem::path> streamPcd(std::string dataPath);
+    std::vector<boost::filesystem::path> streamPcd(std::string dataPath);
 
     BoxQ BoundingBoxQ(typename pcl::PointCloud<PointT>::Ptr cluster);
 
