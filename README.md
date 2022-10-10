@@ -59,7 +59,7 @@ std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT
     srand(time(NULL));
     
     while (maxIterations--) {
-        // Randomly sample subset and fit line
+        // Randomly sample subset and fit a plane
         std::unordered_set<int> inliers;
         while (inliers.size() < 3)
             inliers.insert(rand() % (cloud->points.size()));
