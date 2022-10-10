@@ -49,7 +49,7 @@ typename pcl::PointCloud<PointT>::Ptr ProcessPointClouds<PointT>::FilterCloud(ty
 ```
 ![blockFilt](https://user-images.githubusercontent.com/81184255/194831116-cb8e3edc-7a52-47b8-b36c-29981ec5b96e.gif)
 
-## Segmentation using Rnadom Sample Consensus
+## Segmentation using Random Sampling Consensus
 
 ```cpp
 template<typename PointT>
