@@ -5,7 +5,7 @@ A 3D LiDAR simulation for drivable area segmentaiton, vehicle and pedestrian clu
 
 ![block](https://user-images.githubusercontent.com/81184255/194830479-2a31b3af-14c4-4496-95cb-99825f5da65c.gif)
 
-## Filtered
+## Filtering
 
 ```cpp
 template<typename PointT>
