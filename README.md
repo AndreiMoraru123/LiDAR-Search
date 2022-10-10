@@ -146,7 +146,7 @@ struct TreeKD
     Node* root;
 
     TreeKD()
-            : root(NULL)
+    : root(NULL)
     {}
 
     ~TreeKD()
@@ -162,7 +162,7 @@ struct TreeKD
         }
         else
         {
-            int cd = depth % 2;
+            int cd = depth % 3;
             if (point[cd] < ((*node)->point[cd]))
             {
                 insertHelper(&((*node)->left), depth + 1, point, id);
@@ -176,45 +176,43 @@ struct TreeKD
 
     void insert(std::vector<float> point, int id)
     {
-        Node** node = &root;
-        int depth = 0;
-        while (*node != NULL)
+        insertHelper(&root, 0, point, id);
+    }
+
+    void searchHelper(std::vector<float> target, Node* node, int depth, float distanceTol, std::vector<int>& ids)
+    {
+        if (node != NULL)
         {
-            int cd = depth % 2;
-            if (point[cd] < (*node)->point[cd])
-                node = &(*node)->left;
-            else
-                node = &(*node)->right;
-            depth++;
+            if ((node->point[0] >= (target[0] - distanceTol) && node->point[0] <= (target[0] + distanceTol)) &&
+                (node->point[1] >= (target[1] - distanceTol) && node->point[1] <= (target[1] + distanceTol)) &&
+                (node->point[2] >= (target[2] - distanceTol) && node->point[2] <= (target[2] + distanceTol)))
+            {
+                float distance = sqrt((node->point[0] - target[0]) * (node->point[0] - target[0]) +
+                                      (node->point[1] - target[1]) * (node->point[1] - target[1]) +
+                                      (node->point[2] - target[2]) * (node->point[2] - target[2]));
+                if (distance <= distanceTol)
+                {
+                    ids.push_back(node->id);
+                }
+            }
+
+            if ((target[depth % 3] - distanceTol) < node->point[depth % 3])
+            {
+                searchHelper(target, node->left, depth + 1, distanceTol, ids);
+            }
+            if (( target[depth % 3] + distanceTol) > node->point[depth % 3])
+            {
+                searchHelper(target, node->right, depth + 1, distanceTol, ids);
+            }
         }
-        *node = new Node(point, id);
+
     }
 
     std::vector<int> search(std::vector<float> target, float distanceTol)
     {
         std::vector<int> ids;
-        searchHelper(target, distanceTol, root, 0, ids);
+        searchHelper(target, root, 0, distanceTol, ids);
         return ids;
-    }
-
-    void searchHelper(std::vector<float> target, float distanceTol, Node* node, int depth, std::vector<int>& ids)
-    {
-        if (node != NULL)
-        {
-            if ((node->point[0] >= (target[0] - distanceTol) && node->point[0] <= (target[0] + distanceTol)) &&
-                (node->point[1] >= (target[1] - distanceTol) && node->point[1] <= (target[1] + distanceTol)))
-            {
-                float distance = sqrt((node->point[0] - target[0]) * (node->point[0] - target[0]) +
-                                      (node->point[1] - target[1]) * (node->point[1] - target[1]));
-                if (distance <= distanceTol)
-                    ids.push_back(node->id);
-            }
-
-            if ((target[depth % 2] - distanceTol) < node->point[depth % 2])
-                searchHelper(target, distanceTol, node->left, depth + 1, ids);
-            if ((target[depth % 2] + distanceTol) > node->point[depth % 2])
-                searchHelper(target, distanceTol, node->right, depth + 1, ids);
-        }
     }
 };
 ```
