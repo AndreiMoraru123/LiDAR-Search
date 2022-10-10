@@ -118,8 +118,8 @@ void CityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointCloud
     bool renderScene = false;
     bool render_obstacles = false;
     bool render_plane = true;
-    bool render_box = false;
-    bool render_quaternion_box = true;
+    bool render_box = true;
+    bool render_quaternion_box = false;
     bool render_cluster = true;
 
     if (renderScene) {
