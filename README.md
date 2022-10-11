@@ -323,7 +323,7 @@ struct Box
 ```
 ![blockBox](https://user-images.githubusercontent.com/81184255/194833573-ca4f09c7-9c85-45c2-ad1c-21a89a99b38a.gif)
 
-## Eigen provides functions for rendering the pose of the boxes using quaternions as the represatation of the rotation
+## Eigen provides functions for rendering the pose of the boxes using quaternions as the representation of the rotation
 
 ```cpp
 template<typename PointT>
