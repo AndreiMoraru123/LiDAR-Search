@@ -53,13 +53,15 @@ typename pcl::PointCloud<PointT>::Ptr ProcessPointClouds<PointT>::FilterCloud(ty
 
 ```cpp
 template<typename PointT>
-std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::SegmentPlane3D(typename pcl::PointCloud<PointT>::Ptr cloud, int maxIterations, float distanceThreshold)
+typename std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::SegmentPlane3D(typename pcl::PointCloud<PointT>::Ptr cloud, int maxIterations, float distanceThreshold)
 {
+
     std::unordered_set<int> inliersResult;
     srand(time(NULL));
-    
+
+    // For max iterations
     while (maxIterations--) {
-        // Randomly sample subset and fit a plane
+        // Randomly sample subset and fit line
         std::unordered_set<int> inliers;
         while (inliers.size() < 3)
             inliers.insert(rand() % (cloud->points.size()));
@@ -221,7 +223,7 @@ provides support for K-means clustering
 
 ```cpp
 template <typename PointT>
-std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::Clustering3D(typename pcl::PointCloud<PointT>::Ptr cloud, float clusterTolerance, int minSize, int maxSize) {
+typename std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::Clustering3D(typename pcl::PointCloud<PointT>::Ptr cloud, float clusterTolerance, int minSize, int maxSize) {
 
     std::vector<std::vector<int>> clusters;
     std::vector<typename pcl::PointCloud<PointT>::Ptr> cloudClusters;
