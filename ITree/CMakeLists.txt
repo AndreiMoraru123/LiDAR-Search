@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.23)
-project(Lidar)
+project(ITree)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -13,7 +13,5 @@ link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 list(REMOVE_ITEM PCL_LIBRARIES "vtkproj4")
 
-add_subdirectory(ITree)
-
-add_executable(Lidar environment.cpp render/render.cpp processPointClouds.cpp)
-target_link_libraries (Lidar ${PCL_LIBRARIES})
+add_executable(main main.cpp)
+target_link_libraries (main ${PCL_LIBRARIES})

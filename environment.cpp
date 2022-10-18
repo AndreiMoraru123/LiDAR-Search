@@ -189,7 +189,7 @@ int main (int argc, char** argv)
         viewer->removeAllShapes();
 
         inputCloudI = pointProcessorI->loadPcd((*streamIterator).string());
-        // renderPointCloud(viewer, inputCloudI, "inputCloud"); // to stream raw data
+//        renderPointCloud(viewer, inputCloudI, "inputCloud"); // to stream raw data
         CityBlock(viewer, pointProcessorI, inputCloudI);
 
         streamIterator++;
