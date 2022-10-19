@@ -15,7 +15,7 @@
 ![box](https://user-images.githubusercontent.com/81184255/196661565-ff70f58f-b5eb-47af-b229-496d0da9daa3.gif)
 
 
-### The true utility of the region constrained search is that you can choose where you want to look, which makes a lot of sense for some applications
+#### The true utility of the region constrained search is that you can choose where you want to look, which makes a lot of sense for some applications.
 
 ## Examples:
 
@@ -24,7 +24,7 @@
 ![trackFPS](https://user-images.githubusercontent.com/81184255/196663177-86203a3d-8bd7-43cb-bf86-57653f0c4ec0.gif)
 
 
-### Based on the original paper:
+#### Based on the original paper:
 
 ```
 @misc{https://doi.org/10.48550/arxiv.2102.10808,
@@ -38,3 +38,9 @@
   copyright = {Creative Commons Attribution 4.0 International}
 }
 ```
+
+#### and original IKD-Tree repo:
+
+https://github.com/hku-mars/ikd-Tree
+
+
