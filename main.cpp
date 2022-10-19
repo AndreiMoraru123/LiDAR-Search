@@ -92,7 +92,7 @@ void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCl
     std::cout << "Number of points: " << kdtree.validnum() << std::endl;
 
     PointType ball_center_pt;
-    ball_center_pt.x = 0;
+    ball_center_pt.x = 0.0;
     ball_center_pt.y = 0;
     ball_center_pt.z = 0;
 
@@ -138,8 +138,6 @@ void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCl
     viewer->addText("Purple: Detection Radius", 10, 30, 16, 1.0, 1.0, 1.0, "purple");
     viewer->addText("Red: Bounding Boxes", 10, 50, 16, 1.0, 1.0, 1.0, "red");
 }
-
-// same function as radiusvision but with box search call BoxVision
 
 void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointClouds<pcl::PointXYZ>* pointProcessorI, const pcl::PointCloud<pcl::PointXYZ>::Ptr inputCloud) {
 
@@ -219,27 +217,6 @@ void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCloud
 }
 
 
-//setAngle: SWITCH CAMERA ANGLE {XY, TopDown, Side, FPS}
-void initCamera(CameraAngle setAngle, pcl::visualization::PCLVisualizer::Ptr& viewer)
-{
-    viewer->setBackgroundColor (0, 0, 0);
-    viewer->initCameraParameters();
-
-    // distance away in meters
-    int distance = 15;
-
-    switch(setAngle)
-    {
-        case XY : viewer->setCameraPosition(-distance, -distance, distance, 1, 1, 0); break;
-        case TopDown : viewer->setCameraPosition(0, 0, distance, 1, 0, 1); break;
-        case Side : viewer->setCameraPosition(0, -distance, 0, 0, 0, 1); break;
-        case FPS : viewer->setCameraPosition(-10, 0, 0, 0, 0, 1);
-    }
-
-    if(setAngle!=FPS)
-        viewer->addCoordinateSystem (1.0);
-}
-
 void Vision(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<pcl::PointXYZ>* pointProcessorI, const pcl::PointCloud<pcl::PointXYZ>::Ptr inputCloud)
 {
     // ----------------------------------------------------
@@ -305,8 +282,10 @@ void VisionSwitch(int i, pcl::visualization::PCLVisualizer::Ptr& viewer, Process
         BoxVision(viewer, pointProcessorI, inputCloud);
     } else if (i == 1) {
         RadiusVision(viewer, pointProcessorI, inputCloud);
-    } else {
+    } else if (i == 2) {
         Vision(viewer, pointProcessorI, inputCloud);
+    } else{
+        renderPointCloud(viewer, inputCloud, "inputCloud");
     }
 }
 
@@ -332,7 +311,7 @@ int main (int argc, char** argv)
     pcl::visualization::PCLVisualizer::Ptr viewer (new pcl::visualization::PCLVisualizer ("3D Viewer"));
     viewer->getRenderWindow()->GlobalWarningDisplayOff();
     CameraAngle setAngle = XY;
-    initCamera(setAngle, viewer);
+    initializeCamera(setAngle, viewer);
 
     auto* pointProcessorI = new ProcessPointClouds<pcl::PointXYZ>();
     std::string filename = SceneSwitch(1, viewer);
