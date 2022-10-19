@@ -105,8 +105,7 @@ void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCl
     duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
     std::cout << "Radius search time: " << duration.count() << "ms" << " with points " << SearchedPointsRadius.size() << std::endl;
 
-    std::vector<int> color = {255, 255, 255};
-
+    std::vector<int> color = {255, 0, 255};
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr src_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr searched_radius_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
 
@@ -135,9 +134,9 @@ void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCl
         }
     }
 
-    viewer->addText("Yellow: Obstacles & Pedestrians", 10, 10, 16, 1.0, 1.0, 1.0, "cyan");
-    viewer->addText("White: Detection Radius", 10, 30, 16, 1.0, 1.0, 1.0, "purple");
-    viewer->addText("Red: Bounding Boxes", 10, 50, 16, 1.0, 1.0, 1.0, "orange");
+    viewer->addText("Yellow: Obstacles & Pedestrians", 10, 10, 16, 1.0, 1.0, 1.0, "yellow");
+    viewer->addText("Purple: Detection Radius", 10, 30, 16, 1.0, 1.0, 1.0, "purple");
+    viewer->addText("Red: Bounding Boxes", 10, 50, 16, 1.0, 1.0, 1.0, "red");
 }
 
 // same function as radiusvision but with box search call BoxVision
@@ -185,7 +184,6 @@ void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCloud
     std::cout << "Box search time: " << duration.count() << "ms" << " with points " << SearchedPointsBox.size() << std::endl;
 
     std::vector<int> color = {0, 0, 255};
-
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr src_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr searched_box_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
 
@@ -214,9 +212,9 @@ void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCloud
         }
     }
 
-    viewer->addText("Yellow: Obstacles & Pedestrians", 10, 10, 16, 1.0, 1.0, 1.0, "cyan");
-    viewer->addText("Blue: Detection Box", 10, 30, 16, 1.0, 1.0, 1.0, "purple");
-    viewer->addText("Red: Bounding Boxes", 10, 50, 16, 1.0, 1.0, 1.0, "orange");
+    viewer->addText("Yellow: Obstacles & Pedestrians", 10, 10, 16, 1.0, 1.0, 1.0, "yellow");
+    viewer->addText("Blue: Detection Box", 10, 30, 16, 1.0, 1.0, 1.0, "blue");
+    viewer->addText("Red: Bounding Boxes", 10, 50, 16, 1.0, 1.0, 1.0, "red");
 
 }
 
@@ -357,5 +355,4 @@ int main (int argc, char** argv)
 
         viewer->spinOnce ();
     }
-
 }
