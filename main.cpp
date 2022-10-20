@@ -72,15 +72,6 @@ float test_dist(PointType a, PointType b)
 void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointClouds<pcl::PointXYZ>* pointProcessorI, const pcl::PointCloud<pcl::PointXYZ>::Ptr inputCloud)
 {
 
-    // filter cloud
-    pcl::PointCloud<pcl::PointXYZ>::Ptr filterCloud = pointProcessorI->FilterCloud(inputCloud, 0.3f, Eigen::Vector4f (-10, -5, -2, 1), Eigen::Vector4f ( 30, 8, 1, 1));
-
-    // segment cloud
-    std::pair<pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr> segmentCloud = pointProcessorI->SegmentPlane3D(filterCloud, 100, 0.2);
-
-    // cluster cloud
-    std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> cloudClusters = pointProcessorI->Clustering3D(segmentCloud.first, 0.4, 10, 500);
-
     KD_TREE<PointType>::Ptr kdtree_ptr(new KD_TREE<PointType> (0.3, 0.6, 0.2));
     KD_TREE<PointType> &kdtree = *kdtree_ptr;
 
@@ -113,6 +104,25 @@ void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCl
     pcl::visualization::PointCloudColorHandlerCustom<PointType> color_handler(inputCloud, 0, 255, 0);
     colorize(SearchedPointsRadius, *searched_radius_colored, color);
 
+    pcl::PointCloud<pcl::PointXYZ>::Ptr RegionCloud(new pcl::PointCloud<pcl::PointXYZ>);
+    RegionCloud->points.resize(SearchedPointsRadius.size());
+    for (int i = 0; i < searched_radius_colored->size(); ++i)
+    {
+        RegionCloud->points[i].x = searched_radius_colored->points[i].x;
+        RegionCloud->points[i].y = searched_radius_colored->points[i].y;
+        RegionCloud->points[i].z = searched_radius_colored->points[i].z;
+    }
+
+    // filter cloud
+    pcl::PointCloud<pcl::PointXYZ>::Ptr filterCloud = pointProcessorI->FilterCloud(RegionCloud, 0.3f, Eigen::Vector4f(-10, -5, -2, 1), Eigen::Vector4f(30, 8, 1, 1));
+
+    // segment cloud
+    std::pair<pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr> segmentCloud = pointProcessorI->SegmentPlane3D(
+            filterCloud, 100, 0.2);
+
+    // cluster cloud
+    std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> cloudClusters = pointProcessorI->Clustering3D(segmentCloud.first, 0.4, 10, 500);
+
 
     viewer->addPointCloud<PointType>(inputCloud, color_handler, "src");
 //    viewer->addPointCloud<PointType>(segmentCloud.second, color_handler, "src");
@@ -141,18 +151,6 @@ void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCl
 
 void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointClouds<pcl::PointXYZ>* pointProcessorI, const pcl::PointCloud<pcl::PointXYZ>::Ptr inputCloud) {
 
-    // filter cloud
-    pcl::PointCloud<pcl::PointXYZ>::Ptr filterCloud = pointProcessorI->FilterCloud(inputCloud, 0.3f,
-                                                                                   Eigen::Vector4f(-10, -5, -2, 1),
-                                                                                   Eigen::Vector4f(30, 8, 1, 1));
-
-    // segment cloud
-    std::pair<pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr> segmentCloud = pointProcessorI->SegmentPlane3D(
-            filterCloud, 100, 0.2);
-
-    // cluster cloud
-    std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> cloudClusters = pointProcessorI->Clustering3D(segmentCloud.first,
-                                                                                                   0.4, 10, 500);
 
     KD_TREE<PointType>::Ptr kdtree_ptr(new KD_TREE<PointType>(0.3, 0.6, 0.2));
     KD_TREE<PointType> &kdtree = *kdtree_ptr;
@@ -189,6 +187,24 @@ void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCloud
     pcl::visualization::PointCloudColorHandlerCustom<PointType> color_handler(inputCloud, 0, 255, 0);
     colorize(SearchedPointsBox, *searched_box_colored, color);
 
+    pcl::PointCloud<pcl::PointXYZ>::Ptr RegionCloud(new pcl::PointCloud<pcl::PointXYZ>);
+    RegionCloud->points.resize(SearchedPointsBox.size());
+    for (int i = 0; i < searched_box_colored->size(); ++i)
+        {
+            RegionCloud->points[i].x = searched_box_colored->points[i].x;
+            RegionCloud->points[i].y = searched_box_colored->points[i].y;
+            RegionCloud->points[i].z = searched_box_colored->points[i].z;
+        }
+
+    // filter cloud
+    pcl::PointCloud<pcl::PointXYZ>::Ptr filterCloud = pointProcessorI->FilterCloud(RegionCloud, 0.3f, Eigen::Vector4f(-10, -5, -2, 1), Eigen::Vector4f(30, 8, 1, 1));
+
+    // segment cloud
+    std::pair<pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr> segmentCloud = pointProcessorI->SegmentPlane3D(
+            filterCloud, 100, 0.2);
+
+    // cluster cloud
+    std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> cloudClusters = pointProcessorI->Clustering3D(segmentCloud.first, 0.4, 10, 500);
 
     viewer->addPointCloud<PointType>(inputCloud, color_handler, "src");
 //    viewer->addPointCloud<PointType>(segmentCloud.second, color_handler, "src");
@@ -220,7 +236,7 @@ void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCloud
 void Vision(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<pcl::PointXYZ>* pointProcessorI, const pcl::PointCloud<pcl::PointXYZ>::Ptr inputCloud)
 {
     // ----------------------------------------------------
-    // -----Open 3D viewer and display City Block     -----
+    // -----        Open 3D view and display          -----
     // ----------------------------------------------------
 
     // RENDER OPTIONS
