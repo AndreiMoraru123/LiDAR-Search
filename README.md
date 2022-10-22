@@ -25,7 +25,7 @@
 
 ### ___Painless___ installation of the PCL library on Windows:
 
-* Install vcpkg, the Microsoft unofficial C++ package manager using 
+* Install vcpkg, the Microsoft unofficial C++ package manager
 
 ```bash
 > git clone https://github.com/microsoft/vcpkg
