@@ -23,6 +23,32 @@
 
 ![trackFPS](https://user-images.githubusercontent.com/81184255/196663177-86203a3d-8bd7-43cb-bf86-57653f0c4ec0.gif)
 
+### ___Painless___ installation of the PCL library on Windows:
+
+* Install vcpkg, the Microsoft unofficial C++ package manager using 
+
+```bash
+> git clone https://github.com/microsoft/vcpkg
+> .\vcpkg\bootstrap-vcpkg.bat
+```
+
+There is a lot more info to be found at the original [repo](https://github.com/microsoft/vcpkg), but really, this is all you need
+
+* Install PCL x64
+
+```bash
+> vcpkg install pcl[vtk]:x64-windows --featurepackages --recurse
+```
+
+If you do not explicitly declare an x64 build, vcpkg will default it to x86. Remember that Microsoft works hard to make their products unusable.
+
+* Next you need to specify the toolchain file
+
+```
+-DCMAKE_TOOLCHAIN_FILE=C:\Users\Andrei\vcpkg\scripts\buildsystems\vcpkg.cmake
+```
+
+* If you are on a Windows machine, vcpckg will also default your toolchain to MSVC, so you will have to download Visual Studio and use it as the compiler
 
 #### Based on the original paper:
 
