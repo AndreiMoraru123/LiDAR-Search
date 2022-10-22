@@ -23,7 +23,7 @@
 
 ![trackFPS](https://user-images.githubusercontent.com/81184255/196663177-86203a3d-8bd7-43cb-bf86-57653f0c4ec0.gif)
 
-### ___Painless___ installation of the PCL library on Windows:
+## ___Painless___ installation of the PCL library on Windows:
 
 * Install vcpkg, the Microsoft unofficial C++ package manager
 
@@ -49,6 +49,11 @@ If you do not explicitly declare an x64 build, vcpkg will default it to x86. Rem
 ```
 
 * If you are on a Windows machine, vcpckg will also default your toolchain to MSVC, so you will have to download Visual Studio and use it as the compiler
+
+It looks like this for me (CLion):
+
+![image](https://user-images.githubusercontent.com/81184255/197364009-78660d22-a0e9-4105-8327-9405d300993e.png)
+
 
 #### Based on the original paper:
 
