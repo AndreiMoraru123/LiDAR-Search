@@ -42,7 +42,7 @@ There is a lot more info to be found at the original [repo](https://github.com/m
 
 If you do not explicitly declare an x64 build, vcpkg will default it to x86 and cmake will probably fail. Remember that Microsoft works hard to make sure their products are unusable
 
-* Next you need to specify the toolchain file
+* Next you need to specify the toolchain path to the cmake file
 
 ```
 -DCMAKE_TOOLCHAIN_FILE=C:\Users\Andrei\vcpkg\scripts\buildsystems\vcpkg.cmake
