@@ -45,7 +45,7 @@ If you do not explicitly declare an x64 build, vcpkg will default it to x86 and 
 * Next you need to specify the toolchain path to the cmake file
 
 ```
--DCMAKE_TOOLCHAIN_FILE=C:\Users\Andrei\vcpkg\scripts\buildsystems\vcpkg.cmake
+-DCMAKE_TOOLCHAIN_FILE=C:\Path\vcpkg.cmake
 ```
 
 * If you are on a Windows machine, vcpckg will also default your toolchain to MSVC, so you will have to download Visual Studio and use it as the compiler
