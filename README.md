@@ -23,7 +23,7 @@
 
 ![trackFPS](https://user-images.githubusercontent.com/81184255/196663177-86203a3d-8bd7-43cb-bf86-57653f0c4ec0.gif)
 
-## ___Painless___ installation of the PCL library on Windows:
+## ___Painless___ installation of the Point Cloud Library on Windows:
 
 * Install vcpkg, the Microsoft unofficial C++ package manager
 
