@@ -61,8 +61,12 @@ The algorithm for this is the following:
 1. Randomly select two points to get a line
 2. Compute the line equation ax + by + c = 0
 3. Get the distance between the formed line and the rest of points using d = |ax + by + c| / sqrt(a^2 + b^2)
-4. If the distanced is smaller than a chosen threshold, consider the distanced point an ___inlier___
+4. For each point, if its distance from the line is smaller than a chosen threshold, consider the distanced point an ___inlier___
 5. Repeat 1-4 for a chosen number of iterations
+
+This way, only the line which accomodates the most inliers is the one considered.
+
+This is extremly useful for segmenting out the drivable plane/road in three dimensions.
 
 
 #### The true utility of the region constrained search is that you can choose where you want to look, which makes a lot of sense for some applications.
