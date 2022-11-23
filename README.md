@@ -46,6 +46,8 @@ To look up (10,19) for instance, we:
 2. Eliminate the LEFT side (6,12) -> (9,1) of the subtree having the root (17,15), since 19 > 15 and only search to the RIGHT
 3. Find (10,19) to the LEFT side the subtree having the root (13,15)
 
+## How does RANSAC work?
+
 [Here is a more in depth example using the same numbers](https://www.geeksforgeeks.org/k-dimensional-tree/)
 
 #### The true utility of the region constrained search is that you can choose where you want to look, which makes a lot of sense for some applications.
