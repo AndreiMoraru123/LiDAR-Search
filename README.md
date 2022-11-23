@@ -68,10 +68,9 @@ This way, only the line which accomodates the most inliers is the one considered
 
 This is extremly useful for segmenting out the drivable plane/road in three dimensions.
 
-
-#### The true utility of the region constrained search is that you can choose where you want to look, which makes a lot of sense for some applications.
-
 ## Examples:
+
+#### The biggest selling point of the region constrained search is that you can choose where you want to look, which makes a lot of sense for some applications.
 
 ![track (1)](https://user-images.githubusercontent.com/81184255/196662011-316004ef-6554-490d-9110-ff68d6422783.gif)
 
