@@ -14,6 +14,33 @@
 
 ![box](https://user-images.githubusercontent.com/81184255/196661565-ff70f58f-b5eb-47af-b229-496d0da9daa3.gif)
 
+## How does a K dimensional tree work?
+
+### Building / Insertion
+
+Assuming k = 2 dimensions, below is a short demo
+
+![kdtree](https://user-images.githubusercontent.com/81184255/203546378-50605a04-55f4-4b26-b7ed-b15d72f9e03a.gif)
+
+1. The first inserted node, (3,6) will be the root. 
+2. To insert (17,15), we have to compare it along the X axis with (3,6). Since 17 > 3, we insert it to the RIGHT
+3. To insert (13,16), we have to compare it along the X axis with (3,6), as well as the Y axis of (17,15). Since 13 > 3 and 16 > 15, we insert it to the RIGHT of (17,15)
+4. To insert (6,12), we have to compare it along the X axis with (3,6), as well as Y of (17,15). Since 6 > 3 and 6 < 15, we insert it to the LEFT of (17,15)
+5. To insert (9,1), we compare it with X of (3,6), Y of (17,15) and X of (6,12). Since 9 > 3 and 1 < 15 and 9 > 6, it goes to the RIGHT of (6,2)
+6. To insert (10,19) we compare it with X of (3,6), Y of (17,15) and X of (13,15). Since 10 > 3 and 19 > 15 and 10 < 13, it goes to the LEFT of (13,15)
+7. Lastly, to insert (2,7), we compare it to the X of (3,6), and since 2 < 7, we put it to the LEFT of the root node.
+
+### Searching
+
+Since at every step we get rid of one dimension (either X or Y), we make twice the progress we would make by iterating linearly through the three, which means the search is performed in logarithmic time (in this example a log of base 2)
+
+![kdsearch](https://user-images.githubusercontent.com/81184255/203548868-b9aaabee-0c89-4f31-b4a0-9df0c1630296.gif)
+
+To look up (10,19) for instance, we:
+
+1. Eliminate the LEFT side (2,7) of the tree from the root since 10 > 3 and only search to the RIGHT
+2. Eliminate the LEFT side (6,12) -> (9,1) of the subtree having the root (17,15), since 19 > 15 and only search to the RIGHT
+3. Find (10,19) to the LEFT side the subtree having the root (13,15)
 
 #### The true utility of the region constrained search is that you can choose where you want to look, which makes a lot of sense for some applications.
 
