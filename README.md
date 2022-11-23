@@ -60,7 +60,7 @@ However, applying linear regression here would be shifted by the numerous outlie
 The algorithm for this is the following:
 1. Randomly select two points to get a line
 2. Compute the line equation ax + by + c = 0
-3. Calculate the Euclidean distance between the formed line and the rest of points using d = |ax + by + c| / sqrt(a^2 + b^2)
+3. Get the distance between the formed line and the rest of points using d = |ax + by + c| / sqrt(a^2 + b^2)
 4. If the distanced is smaller than a chosen threshold, consider the distanced point an ___inlier___
 5. Repeat 1-4 for a chosen number of iterations
 
