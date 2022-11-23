@@ -20,7 +20,9 @@
 
 Assuming k = 2 dimensions, below is a short demo
 
-![kdtree](https://user-images.githubusercontent.com/81184255/203546378-50605a04-55f4-4b26-b7ed-b15d72f9e03a.gif)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/81184255/203546378-50605a04-55f4-4b26-b7ed-b15d72f9e03a.gif" width="500"/>
+</p>
 
 1. The first inserted node, (3,6) will be the root. 
 2. To insert (17,15), we have to compare it along the X axis with (3,6). Since 17 > 3, we insert it to the RIGHT
@@ -34,7 +36,9 @@ Assuming k = 2 dimensions, below is a short demo
 
 Since at every step we get rid of one dimension (either X or Y), we make twice the progress we would make by iterating linearly through the three, which means the search is performed in logarithmic time (in this example a log of base 2)
 
-![kdsearch](https://user-images.githubusercontent.com/81184255/203548868-b9aaabee-0c89-4f31-b4a0-9df0c1630296.gif)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/81184255/203548868-b9aaabee-0c89-4f31-b4a0-9df0c1630296.gif" width="500"/>
+</p>
 
 To look up (10,19) for instance, we:
 
