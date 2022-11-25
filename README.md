@@ -110,7 +110,7 @@ It looks like this for me (CLion):
 
 #### Based on the original paper:
 
-```
+```bibtex
 @misc{https://doi.org/10.48550/arxiv.2102.10808,
   doi = {10.48550/ARXIV.2102.10808}, 
   url = {https://arxiv.org/abs/2102.10808},
