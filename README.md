@@ -49,7 +49,7 @@ To look up (10,19) for instance, we:
 
 ## How does RANSAC work?
 
-Again taking a two dimensional example, we can clearly see there is a linear trend in the data below.
+Again taking a two dimensional example, one can clearly see there is a linear trend in the data below.
 
 However, applying linear regression here would be shifted by the numerous outliers, so to find the ___best___ line (and not necesarily the one that accomodates all the points), random sample consensus is used
 
