@@ -6,26 +6,21 @@
 #include <vector>
 #include <string>
 
-struct Color
+struct Color  // Color is a struct that contains RGB info
 {
-
     float r, g, b;
-
     Color(float setR, float setG, float setB)
             : r(setR), g(setG), b(setB)
     {}
 };
 
-struct Vect3
+struct Vect3  // Vect3 is a struct that contains 3D spatial info
 {
-
     double x, y, z;
-
     Vect3(double setX, double setY, double setZ)
-            : x(setX), y(setY), z(setZ)
-    {}
+            : x(setX), y(setY), z(setZ) {}
 
-    Vect3 operator+(const Vect3& vec)
+    Vect3 operator + (const Vect3& vec) // overload + operator so that we can add two Vect3 objects
     {
         Vect3 result(x+vec.x,y+vec.y,z+vec.z);
         return result;
@@ -34,21 +29,19 @@ struct Vect3
 
 enum CameraAngle
 {
+    // These are the camera angles that can be used for perspective
     XY, TopDown, Side, FPS
 };
 
 struct Car
 {
 
-    // units in meters
     Vect3 position, dimensions;
-
     std::string name;
     Color color;
 
     Car(Vect3 setPosition, Vect3 setDimensions, Color setColor, std::string setName)
-            : position(setPosition), dimensions(setDimensions), color(setColor), name(setName)
-    {}
+            : position(setPosition), dimensions(setDimensions), color(setColor), name(setName) {}
 
     void render(pcl::visualization::PCLVisualizer::Ptr& viewer) const
     {

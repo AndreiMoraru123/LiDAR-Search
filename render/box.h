@@ -2,13 +2,14 @@
 #define BOX_H
 #include <Eigen/Geometry>
 
+// BoxQ is a struct that contains the information of a 3D bounding box
 struct BoxQ
 {
-    Eigen::Vector3f bboxTransform;
-    Eigen::Quaternionf bboxQuaternion;
-    float cube_length;
-    float cube_width;
-    float cube_height;
+    Eigen::Vector3f bboxTransform;  // position of box center
+    Eigen::Quaternionf bboxQuaternion;  // orientation of box
+    float cube_length;  // length of box
+    float cube_width;  // width of box
+    float cube_height;  // height of box
 };
 
 struct Box
