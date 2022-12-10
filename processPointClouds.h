@@ -20,9 +20,6 @@
 #include <unordered_set>
 #include "TreeKD.h"
 
-
-namespace fs = boost::filesystem;
-
 template<typename PointT>
 class ProcessPointClouds {
 public:

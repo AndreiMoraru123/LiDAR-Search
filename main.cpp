@@ -4,10 +4,10 @@
 #include "ITree/Tree_I_KD.h"
 #include "ITree/Tree_I_KD.cpp"
 
+
 using PointType = pcl::PointXYZ;
 using PointVector = KD_TREE<PointType>::PointVector;
 template class KD_TREE<pcl::PointXYZ>;
-
 
 void initializeCamera(CameraAngle setAngle, pcl::visualization::PCLVisualizer::Ptr& viewer)
 {
@@ -238,8 +238,6 @@ void Vision(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<p
     }
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr filterCloud = pointProcessorI->FilterCloud(inputCloud, 0.3, Eigen::Vector4f (-10, -5, -2, 1), Eigen::Vector4f ( 30, 8, 1, 1));
-
-    // std::pair<pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> segmentCloud = pointProcessorI->SegmentPlane(filterCloud, 100, 0.2);
     std::pair<pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr> segmentCloud = pointProcessorI->SegmentPlane3D(filterCloud, 100, 0.2);
 
     if (render_obstacles) {
@@ -249,7 +247,6 @@ void Vision(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<p
         renderPointCloud(viewer, segmentCloud.second, "planeCloud", Color(0, 1, 0));
     }
 
-    // std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> cloudClusters = pointProcessorI->Clustering(segmentCloud.first, 0.4, 10, 500);
     std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> cloudClusters = pointProcessorI->Clustering3D(segmentCloud.first, 0.4, 10, 500);
 
     int clusterId = 0;
@@ -277,21 +274,21 @@ void Vision(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<p
     }
 }
 
-void VisionSwitch(int i, pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<pcl::PointXYZ>* pointProcessorI, const pcl::PointCloud<pcl::PointXYZ>::Ptr inputCloud) {
-    if (i == 0) {
+void VisionSwitch(char i, pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<pcl::PointXYZ>* pointProcessorI, const pcl::PointCloud<pcl::PointXYZ>::Ptr inputCloud) {
+    if (i == 'b') {
         BoxVision(viewer, pointProcessorI, inputCloud);
-    } else if (i == 1) {
+    } else if (i == 'r') {
         RadiusVision(viewer, pointProcessorI, inputCloud);
-    } else if (i == 2) {
+    } else if (i == 't') {
         Vision(viewer, pointProcessorI, inputCloud);
     } else{
         renderPointCloud(viewer, inputCloud, "inputCloud");
     }
 }
 
-std::string SceneSwitch(int i, pcl::visualization::PCLVisualizer::Ptr& viewer) {
+std::string SceneSwitch(char i, pcl::visualization::PCLVisualizer::Ptr& viewer) {
     std::string filename;
-    if (i == 1) {
+    if (i == '1') {
         viewer->removeAllPointClouds();
         viewer->removeAllShapes();
         filename = R"(sensors/data/pcd/data_1/)";
@@ -304,15 +301,41 @@ std::string SceneSwitch(int i, pcl::visualization::PCLVisualizer::Ptr& viewer) {
     return filename;
 }
 
-int main (int argc, char** argv)
+char *getCmdOption(char **begin, char **end, const std::string & option)
 {
+    char **itr = std::find(begin, end, option);
+    if (itr != end && ++itr != end)
+    {
+        return *itr;
+    }
+    return nullptr;
+}
+
+bool cmdOptionExists(char** begin, char** end, const std::string& option)
+{
+    return std::find(begin, end, option) != end;
+}
+
+int main (int argc, char *argv[])
+{
+    if (cmdOptionExists(argv, argv+argc, "-h"))
+    {
+        std::cout << "Usage: ./environment -s [scene] -v [vision]" << std::endl;
+        std::cout << "Scene: 1 or 2" << std::endl;
+        std::cout << "Vision: b->Box, r->Radius, t->Total, default->Raw data" << std::endl;
+        return 0;
+    }
+
+    char *scene = getCmdOption(argv, argv + argc, "-s");
+    char *vision = getCmdOption(argv, argv + argc, "-v");
+
     pcl::visualization::PCLVisualizer::Ptr viewer (new pcl::visualization::PCLVisualizer ("3D Viewer"));
     viewer->getRenderWindow()->GlobalWarningDisplayOff();
     CameraAngle setAngle = XY;
     initializeCamera(setAngle, viewer);
 
     auto* pointProcessorI = new ProcessPointClouds<pcl::PointXYZ>();
-    std::string filename = SceneSwitch(1, viewer);
+    std::string filename = SceneSwitch(*scene, viewer);
     std::vector<boost::filesystem::path> stream = pointProcessorI->streamPcd(filename);
     auto streamIterator = stream.begin();
     pcl::PointCloud<pcl::PointXYZ>::Ptr inputCloudI;
@@ -324,7 +347,7 @@ int main (int argc, char** argv)
         viewer->removeAllShapes();
 
         inputCloudI = pointProcessorI->loadPcd((*streamIterator).string());
-        VisionSwitch(1,viewer, pointProcessorI, inputCloudI);
+        VisionSwitch(*vision,viewer, pointProcessorI, inputCloudI);
 
         streamIterator++;
         if(streamIterator == stream.end())
