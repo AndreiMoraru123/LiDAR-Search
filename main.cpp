@@ -310,12 +310,12 @@ std::string SceneSwitch(int i, pcl::visualization::PCLVisualizer::Ptr& viewer) {
     if (i == 1) {
         viewer->removeAllPointClouds();
         viewer->removeAllShapes();
-        filename = R"(D:\\Lidar\\sensors\\data\\pcd\\data_1\\)";
+        filename = R"(sensors/data/pcd/data_1/)";
 
     } else {
         viewer->removeAllPointClouds();
         viewer->removeAllShapes();
-        filename = R"(D:\\Lidar\\sensors\\data\\pcd\\data_2\\)";
+        filename = R"(sensors/data/pcd/data_2/)";
     }
     return filename;
 }
@@ -328,7 +328,7 @@ int main (int argc, char** argv)
     initializeCamera(setAngle, viewer);
 
     auto* pointProcessorI = new ProcessPointClouds<pcl::PointXYZ>();
-    std::string filename = SceneSwitch(2, viewer);
+    std::string filename = SceneSwitch(1, viewer);
     std::vector<boost::filesystem::path> stream = pointProcessorI->streamPcd(filename);
     auto streamIterator = stream.begin();
     pcl::PointCloud<pcl::PointXYZ>::Ptr inputCloudI;
@@ -340,7 +340,7 @@ int main (int argc, char** argv)
         viewer->removeAllShapes();
 
         inputCloudI = pointProcessorI->loadPcd((*streamIterator).string());
-        VisionSwitch(0,viewer, pointProcessorI, inputCloudI);
+        VisionSwitch(1,viewer, pointProcessorI, inputCloudI);
 
         streamIterator++;
         if(streamIterator == stream.end())
