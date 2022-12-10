@@ -99,9 +99,8 @@ void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCl
     std::vector<int> color = {255, 0, 255};
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr src_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr searched_radius_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
-
-//    pcl::visualization::PointCloudColorHandlerGenericField<PointType> color_handler(inputCloud, "x");
     pcl::visualization::PointCloudColorHandlerCustom<PointType> color_handler(inputCloud, 0, 255, 0);
+
     colorize(SearchedPointsRadius, *searched_radius_colored, color);
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr RegionCloud(new pcl::PointCloud<pcl::PointXYZ>);
@@ -113,19 +112,15 @@ void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCl
         RegionCloud->points[i].z = searched_radius_colored->points[i].z;
     }
 
-    // filter cloud
     pcl::PointCloud<pcl::PointXYZ>::Ptr filterCloud = pointProcessorI->FilterCloud(RegionCloud, 0.3f, Eigen::Vector4f(-10, -5, -2, 1), Eigen::Vector4f(30, 8, 1, 1));
 
-    // segment cloud
     std::pair<pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr> segmentCloud = pointProcessorI->SegmentPlane3D(
             filterCloud, 100, 0.2);
 
-    // cluster cloud
     std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> cloudClusters = pointProcessorI->Clustering3D(segmentCloud.first, 0.4, 10, 500);
 
 
     viewer->addPointCloud<PointType>(inputCloud, color_handler, "src");
-//    viewer->addPointCloud<PointType>(segmentCloud.second, color_handler, "src");
     viewer->addPointCloud<pcl::PointXYZRGB> (searched_radius_colored, "cloud_colored_radius");
 
     int clusterId = 0;
@@ -135,8 +130,6 @@ void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCl
     {
         if (test_dist(cluster->points[0], ball_center_pt) < radius * radius)
         {
-//            std::cout << "cluster size ";
-//            pointProcessorI->numPoints(cluster);
             renderPointCloud(viewer,cluster,"obstCloud"+std::to_string(clusterId),colors[clusterId % colors.size()]);
             Box box = pointProcessorI->BoundingBox(cluster);
             renderBox(viewer,box,clusterId);
@@ -182,9 +175,8 @@ void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCloud
     std::vector<int> color = {0, 0, 255};
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr src_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr searched_box_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
-
-//    pcl::visualization::PointCloudColorHandlerGenericField<PointType> color_handler(inputCloud, "x");
     pcl::visualization::PointCloudColorHandlerCustom<PointType> color_handler(inputCloud, 0, 255, 0);
+
     colorize(SearchedPointsBox, *searched_box_colored, color);
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr RegionCloud(new pcl::PointCloud<pcl::PointXYZ>);
@@ -196,18 +188,14 @@ void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCloud
             RegionCloud->points[i].z = searched_box_colored->points[i].z;
         }
 
-    // filter cloud
     pcl::PointCloud<pcl::PointXYZ>::Ptr filterCloud = pointProcessorI->FilterCloud(RegionCloud, 0.3f, Eigen::Vector4f(-10, -5, -2, 1), Eigen::Vector4f(30, 8, 1, 1));
 
-    // segment cloud
     std::pair<pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr> segmentCloud = pointProcessorI->SegmentPlane3D(
             filterCloud, 100, 0.2);
 
-    // cluster cloud
     std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> cloudClusters = pointProcessorI->Clustering3D(segmentCloud.first, 0.4, 10, 500);
 
     viewer->addPointCloud<PointType>(inputCloud, color_handler, "src");
-//    viewer->addPointCloud<PointType>(segmentCloud.second, color_handler, "src");
     viewer->addPointCloud<pcl::PointXYZRGB> (searched_box_colored, "cloud_colored_radius");
 
     int clusterId = 0;
@@ -217,8 +205,6 @@ void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCloud
     {
         if (test_dist(cluster->points[0], center_pt) < box_lengths[0] * box_lengths[1])
         {
-//            std::cout << "cluster size ";
-//            pointProcessorI->numPoints(cluster);
             renderPointCloud(viewer,cluster,"obstCloud"+std::to_string(clusterId),colors[clusterId % colors.size()]);
             Box box = pointProcessorI->BoundingBox(cluster);
             renderBox(viewer,box,clusterId);
@@ -250,10 +236,9 @@ void Vision(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<p
     if (renderScene) {
         renderPointCloud(viewer, inputCloud, "inputCloud");
     }
-    // Filtering
+
     pcl::PointCloud<pcl::PointXYZ>::Ptr filterCloud = pointProcessorI->FilterCloud(inputCloud, 0.3, Eigen::Vector4f (-10, -5, -2, 1), Eigen::Vector4f ( 30, 8, 1, 1));
 
-    // Segmentation using custom method vs PCL
     // std::pair<pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> segmentCloud = pointProcessorI->SegmentPlane(filterCloud, 100, 0.2);
     std::pair<pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr> segmentCloud = pointProcessorI->SegmentPlane3D(filterCloud, 100, 0.2);
 
@@ -264,7 +249,6 @@ void Vision(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<p
         renderPointCloud(viewer, segmentCloud.second, "planeCloud", Color(0, 1, 0));
     }
 
-    // Clustering using custom method vs PCL
     // std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> cloudClusters = pointProcessorI->Clustering(segmentCloud.first, 0.4, 10, 500);
     std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> cloudClusters = pointProcessorI->Clustering3D(segmentCloud.first, 0.4, 10, 500);
 
