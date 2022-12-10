@@ -31,8 +31,6 @@ public:
 
     ~ProcessPointClouds();
 
-    void numPoints(typename pcl::PointCloud<PointT>::Ptr cloud);
-
     typename pcl::PointCloud<PointT>::Ptr FilterCloud(typename pcl::PointCloud<PointT>::Ptr cloud, float filterRes, Eigen::Vector4f minPoint, Eigen::Vector4f maxPoint);
 
     typename std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT>::Ptr> SeparateClouds(pcl::PointIndices::Ptr inliers, typename pcl::PointCloud<PointT>::Ptr cloud);
@@ -46,10 +44,6 @@ public:
     void savePcd(typename pcl::PointCloud<PointT>::Ptr cloud, std::string file);
 
     typename pcl::PointCloud<PointT>::Ptr loadPcd(std::string file);
-
-//    std::vector<std::filesystem::path> streamPcd(std::string dataPath);
-
-//    std::vector<boost::filesystem::path> streamPcd(fs::path dataPath);
 
     std::vector<boost::filesystem::path> streamPcd(std::string dataPath);
 

@@ -55,7 +55,7 @@ void colorize( const PointVector &pc, pcl::PointCloud<pcl::PointXYZRGB> &pc_colo
         pt_tmp.r = color[0];
         pt_tmp.g = color[1];
         pt_tmp.b = color[2];
-        pc_colored.points.emplace_back(pt_tmp);
+        pc_colored.points.push_back(pt_tmp);
     }
 }
 
@@ -94,7 +94,7 @@ void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCl
     kdtree.Radius_Search(ball_center_pt, radius, SearchedPointsRadius);
     stop = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
-    std::cout << "Radius search time: " << duration.count() << "ms" << " with points " << SearchedPointsRadius.size() << std::endl;
+    std::cout << "Radius search time: " << duration.count() << "ms" << " with " << SearchedPointsRadius.size() << " points" << std::endl;
 
     std::vector<int> color = {255, 0, 255};
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr src_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
@@ -135,8 +135,8 @@ void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCl
     {
         if (test_dist(cluster->points[0], ball_center_pt) < radius * radius)
         {
-            std::cout << "cluster size ";
-            pointProcessorI->numPoints(cluster);
+//            std::cout << "cluster size ";
+//            pointProcessorI->numPoints(cluster);
             renderPointCloud(viewer,cluster,"obstCloud"+std::to_string(clusterId),colors[clusterId % colors.size()]);
             Box box = pointProcessorI->BoundingBox(cluster);
             renderBox(viewer,box,clusterId);
@@ -177,7 +177,7 @@ void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCloud
     kdtree.Box_Search(boxpoint, SearchedPointsBox);
     stop = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
-    std::cout << "Box search time: " << duration.count() << "ms" << " with points " << SearchedPointsBox.size() << std::endl;
+    std::cout << "Box search time: " << duration.count() << "ms" << " with " << SearchedPointsBox.size() << " points" << std::endl;
 
     std::vector<int> color = {0, 0, 255};
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr src_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
@@ -217,8 +217,8 @@ void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCloud
     {
         if (test_dist(cluster->points[0], center_pt) < box_lengths[0] * box_lengths[1])
         {
-            std::cout << "cluster size ";
-            pointProcessorI->numPoints(cluster);
+//            std::cout << "cluster size ";
+//            pointProcessorI->numPoints(cluster);
             renderPointCloud(viewer,cluster,"obstCloud"+std::to_string(clusterId),colors[clusterId % colors.size()]);
             Box box = pointProcessorI->BoundingBox(cluster);
             renderBox(viewer,box,clusterId);
@@ -307,7 +307,7 @@ void VisionSwitch(int i, pcl::visualization::PCLVisualizer::Ptr& viewer, Process
 
 std::string SceneSwitch(int i, pcl::visualization::PCLVisualizer::Ptr& viewer) {
     std::string filename;
-    if (i == 0) {
+    if (i == 1) {
         viewer->removeAllPointClouds();
         viewer->removeAllShapes();
         filename = R"(D:\\Lidar\\sensors\\data\\pcd\\data_1\\)";
@@ -322,15 +322,13 @@ std::string SceneSwitch(int i, pcl::visualization::PCLVisualizer::Ptr& viewer) {
 
 int main (int argc, char** argv)
 {
-    std::cout << "starting enviroment" << std::endl;
-
     pcl::visualization::PCLVisualizer::Ptr viewer (new pcl::visualization::PCLVisualizer ("3D Viewer"));
     viewer->getRenderWindow()->GlobalWarningDisplayOff();
     CameraAngle setAngle = XY;
     initializeCamera(setAngle, viewer);
 
     auto* pointProcessorI = new ProcessPointClouds<pcl::PointXYZ>();
-    std::string filename = SceneSwitch(1, viewer);
+    std::string filename = SceneSwitch(2, viewer);
     std::vector<boost::filesystem::path> stream = pointProcessorI->streamPcd(filename);
     auto streamIterator = stream.begin();
     pcl::PointCloud<pcl::PointXYZ>::Ptr inputCloudI;
@@ -342,7 +340,7 @@ int main (int argc, char** argv)
         viewer->removeAllShapes();
 
         inputCloudI = pointProcessorI->loadPcd((*streamIterator).string());
-        VisionSwitch(1,viewer, pointProcessorI, inputCloudI);
+        VisionSwitch(0,viewer, pointProcessorI, inputCloudI);
 
         streamIterator++;
         if(streamIterator == stream.end())

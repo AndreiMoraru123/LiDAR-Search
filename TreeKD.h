@@ -83,7 +83,7 @@ struct TreeKD
             {
                 searchHelper(target, node->left, depth + 1, distanceTol, ids);
             }
-            if (( target[depth % 3] + distanceTol) > node->point[depth % 3])
+            if ((target[depth % 3] + distanceTol) > node->point[depth % 3])
             {
                 searchHelper(target, node->right, depth + 1, distanceTol, ids);
             }
