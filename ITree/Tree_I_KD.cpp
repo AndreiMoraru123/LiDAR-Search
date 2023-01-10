@@ -97,7 +97,7 @@ int KD_TREE<PointType>::size(){
 
 template <typename PointType>
 BoxPointType KD_TREE<PointType>::tree_range(){
-    BoxPointType range;
+    BoxPointType range{};
     if (Rebuild_Ptr == nullptr || *Rebuild_Ptr != Root_Node){
         if (Root_Node != nullptr) {
             range.vertex_min[0] = Root_Node->node_range_x[0];
@@ -191,7 +191,7 @@ void KD_TREE <PointType>::stop_thread(){
 
 template <typename PointType>
 void * KD_TREE<PointType>::multi_thread_ptr(void * arg){
-    KD_TREE * handle = (KD_TREE*) arg;
+    auto * handle = (KD_TREE*) arg;
     handle->multi_thread_rebuild();
     return nullptr;
 }
@@ -257,7 +257,7 @@ void KD_TREE<PointType>::multi_thread_rebuild() {
                     working_flag_mutex.unlock();
                     run_operation(&new_root_node, Operation);
                     tmp_counter++;
-                    if (tmp_counter % 10 == 0) std::this_thread::sleep_for(std::chrono::seconds(1));;
+                    if (tmp_counter % 10 == 0) std::this_thread::sleep_for(std::chrono::seconds(1));
                     working_flag_mutex.lock();
                     rebuild_logger_mutex_lock.lock();
                 }
@@ -366,7 +366,7 @@ template <typename PointType>
 int KD_TREE<PointType>::Add_Points(PointVector & PointToAdd, bool downsample_on){
     int NewPointSize = PointToAdd.size();
     int tree_size = size();
-    BoxPointType Box_of_Point;
+    BoxPointType Box_of_Point{};
     PointType downsample_result, mid_point;
     bool downsample_switch = downsample_on && DOWNSAMPLE_SWITCH;
     float min_dist, tmp_dist;
@@ -416,7 +416,7 @@ int KD_TREE<PointType>::Add_Points(PointVector & PointToAdd, bool downsample_on)
                         working_flag_mutex.unlock();
                     }
                      working_flag_mutex.unlock();
-                };
+                }
             }
         } else {
             if (Rebuild_Ptr == nullptr || *Rebuild_Ptr != Root_Node){
@@ -440,15 +440,15 @@ int KD_TREE<PointType>::Add_Points(PointVector & PointToAdd, bool downsample_on)
 
 template <typename PointType>
 void KD_TREE<PointType>::Add_Point_Boxes(vector<BoxPointType> & BoxPoints){
-    for (int i=0;i < BoxPoints.size();i++){
+    for (auto & BoxPoint : BoxPoints){
         if (Rebuild_Ptr == nullptr || *Rebuild_Ptr != Root_Node){
-            Add_by_range(&Root_Node ,BoxPoints[i], true);
+            Add_by_range(&Root_Node ,BoxPoint, true);
         } else {
             Operation_Logger_Type operation;
-            operation.boxpoint = BoxPoints[i];
+            operation.boxpoint = BoxPoint;
             operation.op = ADD_BOX;
             working_flag_mutex.lock();
-            Add_by_range(&Root_Node ,BoxPoints[i], false);
+            Add_by_range(&Root_Node ,BoxPoint, false);
             if (rebuild_flag){
                 working_flag_mutex.lock();
                 Rebuild_Logger.push(operation);
@@ -483,15 +483,15 @@ void KD_TREE<PointType>::Delete_Points(PointVector & PointToDel){
 template <typename PointType>
 int KD_TREE<PointType>::Delete_Point_Boxes(vector<BoxPointType> & BoxPoints){
     int tmp_counter = 0;
-    for (int i=0;i < BoxPoints.size();i++){
+    for (auto & BoxPoint : BoxPoints){
         if (Rebuild_Ptr == nullptr || *Rebuild_Ptr != Root_Node){
-            tmp_counter += Delete_by_range(&Root_Node ,BoxPoints[i], true, false);
+            tmp_counter += Delete_by_range(&Root_Node ,BoxPoint, true, false);
         } else {
             Operation_Logger_Type operation;
-            operation.boxpoint = BoxPoints[i];
+            operation.boxpoint = BoxPoint;
             operation.op = DELETE_BOX;
             working_flag_mutex.lock();
-            tmp_counter += Delete_by_range(&Root_Node ,BoxPoints[i], false, false);
+            tmp_counter += Delete_by_range(&Root_Node ,BoxPoint, false, false);
             if (rebuild_flag){
                 working_flag_mutex.lock();
                 Rebuild_Logger.push(operation);
@@ -620,7 +620,7 @@ int KD_TREE<PointType>::Delete_by_range(KD_TREE_NODE ** root,  BoxPointType boxp
         if (is_downsample) (*root)->point_downsample_deleted = true;
     }
     Operation_Logger_Type delete_box_log;
-    struct timespec Timeout;
+    struct timespec Timeout{};
     if (is_downsample) delete_box_log.op = DOWNSAMPLE_DELETE;
     else delete_box_log.op = DELETE_BOX;
     delete_box_log.boxpoint = boxpoint;
@@ -668,7 +668,7 @@ void KD_TREE<PointType>::Delete_by_point(KD_TREE_NODE ** root, PointType point, 
         return;
     }
     Operation_Logger_Type delete_log;
-    struct timespec Timeout;
+    struct timespec Timeout{};
     delete_log.op = DELETE_POINT;
     delete_log.point = point;
     if (((*root)->division_axis == 0 && point.x < (*root)->point.x) || ((*root)->division_axis == 1 && point.y < (*root)->point.y) || ((*root)->division_axis == 2 && point.z < (*root)->point.z)){
@@ -714,8 +714,8 @@ void KD_TREE<PointType>::Add_by_range(KD_TREE_NODE ** root, BoxPointType boxpoin
     if (boxpoint.vertex_max[1] <= (*root)->node_range_y[0] || boxpoint.vertex_min[1] > (*root)->node_range_y[1]) return;
     if (boxpoint.vertex_max[2] <= (*root)->node_range_z[0] || boxpoint.vertex_min[2] > (*root)->node_range_z[1]) return;
     if (boxpoint.vertex_min[0] <= (*root)->node_range_x[0] && boxpoint.vertex_max[0] > (*root)->node_range_x[1] && boxpoint.vertex_min[1] <= (*root)->node_range_y[0] && boxpoint.vertex_max[1]> (*root)->node_range_y[1] && boxpoint.vertex_min[2] <= (*root)->node_range_z[0] && boxpoint.vertex_max[2] > (*root)->node_range_z[1]){
-        (*root)->tree_deleted = false || (*root)->tree_downsample_deleted;
-        (*root)->point_deleted = false || (*root)->point_downsample_deleted;
+        (*root)->tree_deleted = (*root)->tree_downsample_deleted;
+        (*root)->point_deleted = (*root)->point_downsample_deleted;
         (*root)->need_push_down_to_left = true;
         (*root)->need_push_down_to_right = true;
         (*root)->invalid_point_num = (*root)->down_del_num;
@@ -725,7 +725,7 @@ void KD_TREE<PointType>::Add_by_range(KD_TREE_NODE ** root, BoxPointType boxpoin
         (*root)->point_deleted = (*root)->point_downsample_deleted;
     }
     Operation_Logger_Type add_box_log;
-    struct timespec Timeout;
+    struct timespec Timeout{};
     add_box_log.op = ADD_BOX;
     add_box_log.boxpoint = boxpoint;
     if ((Rebuild_Ptr == nullptr) || (*root)->left_son_ptr != *Rebuild_Ptr){
@@ -772,7 +772,7 @@ void KD_TREE<PointType>::Add_by_point(KD_TREE_NODE ** root, PointType point, boo
     }
     (*root)->working_flag = true;
     Operation_Logger_Type add_log;
-    struct timespec Timeout;
+    struct timespec Timeout{};
     add_log.op = ADD_POINT;
     add_log.point = point;
     Push_Down(*root);

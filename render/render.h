@@ -3,6 +3,7 @@
 #include <pcl/visualization/pcl_visualizer.h>
 #include "box.h"
 #include <iostream>
+#include <utility>
 #include <vector>
 #include <string>
 
@@ -20,7 +21,7 @@ struct Vect3  // Vect3 is a struct that contains 3D spatial info
     Vect3(double setX, double setY, double setZ)
             : x(setX), y(setY), z(setZ) {}
 
-    Vect3 operator + (const Vect3& vec) // overload + operator so that we can add two Vect3 objects
+    Vect3 operator + (const Vect3& vec) const // overload + operator so that we can add two Vect3 objects
     {
         Vect3 result(x+vec.x,y+vec.y,z+vec.z);
         return result;
@@ -41,7 +42,7 @@ struct Car
     Color color;
 
     Car(Vect3 setPosition, Vect3 setDimensions, Color setColor, std::string setName)
-            : position(setPosition), dimensions(setDimensions), color(setColor), name(setName) {}
+            : position(setPosition), dimensions(setDimensions), color(setColor), name(std::move(setName)) {}
 
     void render(pcl::visualization::PCLVisualizer::Ptr& viewer) const
     {
@@ -74,9 +75,9 @@ struct Car
 void renderHighway(pcl::visualization::PCLVisualizer::Ptr& viewer);
 void renderRays(pcl::visualization::PCLVisualizer::Ptr& viewer, const Vect3& origin, const pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud);
 void clearRays(pcl::visualization::PCLVisualizer::Ptr& viewer);
-void renderPointCloud(pcl::visualization::PCLVisualizer::Ptr& viewer, const pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud, std::string name, Color color = Color(1,1,1));
-void renderPointCloud(pcl::visualization::PCLVisualizer::Ptr& viewer, const pcl::PointCloud<pcl::PointXYZI>::Ptr& cloud, std::string name, Color color = Color(-1,-1,-1));
+void renderPointCloud(pcl::visualization::PCLVisualizer::Ptr& viewer, const pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud, const std::string& name, Color color = Color(1,1,1));
+void renderPointCloud(pcl::visualization::PCLVisualizer::Ptr& viewer, const pcl::PointCloud<pcl::PointXYZI>::Ptr& cloud, const std::string& name, Color color = Color(-1,-1,-1));
 void renderBox(pcl::visualization::PCLVisualizer::Ptr& viewer, Box box, int id, Color color = Color(1,0,0), float opacity=1);
-void renderBox(pcl::visualization::PCLVisualizer::Ptr& viewer, BoxQ box, int id, Color color = Color(1,0,0), float opacity=1);
+void renderBox(pcl::visualization::PCLVisualizer::Ptr& viewer, const BoxQ& box, int id, Color color = Color(1,0,0), float opacity=1);
 
 #endif /* RENDER_H */

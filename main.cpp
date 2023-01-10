@@ -7,7 +7,7 @@
 
 using PointType = pcl::PointXYZ;
 using PointVector = KD_TREE<PointType>::PointVector;
-template class KD_TREE<pcl::PointXYZ>;
+//template class KD_TREE<pcl::PointXYZ>;
 
 void initializeCamera(CameraAngle setAngle, pcl::visualization::PCLVisualizer::Ptr& viewer)
 {
@@ -42,7 +42,7 @@ void generate_box(BoxPointType &boxpoint, const PointType &center_pt, vector<flo
 }
 
 void colorize( const PointVector &pc, pcl::PointCloud<pcl::PointXYZRGB> &pc_colored, const std::vector<int> &color) {
-    int N = pc.size();
+    int N = (int)pc.size();
 
     pc_colored.clear();
     pcl::PointXYZRGB pt_tmp;
@@ -59,17 +59,14 @@ void colorize( const PointVector &pc, pcl::PointCloud<pcl::PointXYZRGB> &pc_colo
     }
 }
 
-
-
 float test_dist(PointType a, PointType b)
 {
-    float dist = 0.0f;
-    dist = (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z);
+    float dist = (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z);
     return dist;
 }
 
 
-void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointClouds<pcl::PointXYZ>* pointProcessorI, const pcl::PointCloud<pcl::PointXYZ>::Ptr inputCloud)
+void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointClouds<pcl::PointXYZ>* pointProcessorI, const pcl::PointCloud<pcl::PointXYZ>::Ptr& inputCloud)
 {
 
     KD_TREE<PointType>::Ptr kdtree_ptr(new KD_TREE<PointType> (0.3, 0.6, 0.2));
@@ -126,7 +123,7 @@ void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCl
     int clusterId = 0;
     std::vector<Color> colors = {Color(1,1,0), Color(1,0.84,0), Color(1,1,0.5)};
 
-    for(pcl::PointCloud<pcl::PointXYZ>::Ptr cluster : cloudClusters)
+    for(pcl::PointCloud<pcl::PointXYZ>::Ptr& cluster : cloudClusters)
     {
         if (test_dist(cluster->points[0], ball_center_pt) < radius * radius)
         {
@@ -142,7 +139,7 @@ void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCl
     viewer->addText("Red: Bounding Boxes", 10, 50, 16, 1.0, 1.0, 1.0, "red");
 }
 
-void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointClouds<pcl::PointXYZ>* pointProcessorI, const pcl::PointCloud<pcl::PointXYZ>::Ptr inputCloud) {
+void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointClouds<pcl::PointXYZ>* pointProcessorI, const pcl::PointCloud<pcl::PointXYZ>::Ptr& inputCloud) {
 
 
     KD_TREE<PointType>::Ptr kdtree_ptr(new KD_TREE<PointType>(0.3, 0.6, 0.2));
@@ -159,7 +156,7 @@ void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCloud
     center_pt.x = 0.0;
     center_pt.y = 0.0;
     center_pt.z = 0.0;
-    BoxPointType boxpoint;
+    BoxPointType boxpoint{};
     std::vector<float> box_lengths = {10.00, 10.00, 10.00};
     generate_box(boxpoint, center_pt, box_lengths);
 
@@ -201,7 +198,7 @@ void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCloud
     int clusterId = 0;
     std::vector<Color> colors = {Color(1,1,0), Color(1,0.84,0), Color(1,1,0.5)};
 
-    for(pcl::PointCloud<pcl::PointXYZ>::Ptr cluster : cloudClusters)
+    for(const pcl::PointCloud<pcl::PointXYZ>::Ptr& cluster : cloudClusters)
     {
         if (test_dist(cluster->points[0], center_pt) < box_lengths[0] * box_lengths[1])
         {
@@ -215,11 +212,9 @@ void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCloud
     viewer->addText("Yellow: Obstacles & Pedestrians", 10, 10, 16, 1.0, 1.0, 1.0, "yellow");
     viewer->addText("Blue: Detection Box", 10, 30, 16, 1.0, 1.0, 1.0, "blue");
     viewer->addText("Red: Bounding Boxes", 10, 50, 16, 1.0, 1.0, 1.0, "red");
-
 }
 
-
-void Vision(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<pcl::PointXYZ>* pointProcessorI, const pcl::PointCloud<pcl::PointXYZ>::Ptr inputCloud)
+void Vision(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<pcl::PointXYZ>* pointProcessorI, const pcl::PointCloud<pcl::PointXYZ>::Ptr& inputCloud)
 {
     // ----------------------------------------------------
     // -----        Open 3D view and display          -----
@@ -269,12 +264,11 @@ void Vision(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<p
             BoxQ box = pointProcessorI->BoundingBoxQ(cluster);
             renderBox(viewer, box, clusterId);
         }
-
         ++clusterId;
     }
 }
 
-void VisionSwitch(char i, pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<pcl::PointXYZ>* pointProcessorI, const pcl::PointCloud<pcl::PointXYZ>::Ptr inputCloud) {
+void VisionSwitch(char i, pcl::visualization::PCLVisualizer::Ptr &viewer, ProcessPointClouds<pcl::PointXYZ>* pointProcessorI, const pcl::PointCloud<pcl::PointXYZ>::Ptr& inputCloud) {
     if (i == 'b') {
         BoxVision(viewer, pointProcessorI, inputCloud);
     } else if (i == 'r') {
@@ -286,7 +280,7 @@ void VisionSwitch(char i, pcl::visualization::PCLVisualizer::Ptr& viewer, Proces
     }
 }
 
-std::string SceneSwitch(char i, pcl::visualization::PCLVisualizer::Ptr& viewer) {
+std::string SceneSwitch(char i, const pcl::visualization::PCLVisualizer::Ptr&  viewer) {
     std::string filename;
     if (i == '1') {
         viewer->removeAllPointClouds();

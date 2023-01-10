@@ -186,7 +186,7 @@ typename std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointClo
 
     seg.setInputCloud (cloud);  // set input cloud
     seg.segment (*inliers, *coefficients);  // segment cloud
-    if (inliers->indices.size () == 0) // check if no inliers were found
+    if (inliers->indices.empty()) // check if no inliers were found
     {
         PCL_ERROR ("Could not estimate a planar model for the given dataset.");
     }
@@ -201,7 +201,7 @@ typename std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointClo
 }
 
 template <typename PointT>
-std::vector<boost::filesystem::path> ProcessPointClouds<PointT>::streamPcd(std::string dataPath) {
+std::vector<boost::filesystem::path> ProcessPointClouds<PointT>::streamPcd(const std::string& dataPath) {
     std::vector<boost::filesystem::path> paths(
             boost::filesystem::directory_iterator{dataPath},
             boost::filesystem::directory_iterator{}
@@ -217,7 +217,7 @@ typename std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointClo
 {
 
     std::unordered_set<int> inliersResult;
-    srand(time(NULL));
+    srand(time(nullptr));
 
     // For max iterations
     while (maxIterations--) {
@@ -288,7 +288,7 @@ static void recursiveClustering(int indice, const std::vector<std::vector<float>
 {
     processed[indice] = true;  // set point as processed
     cluster.push_back(indice);  // add point to cluster
-    std::vector<int> nearest = tree->search(points[indice], distanceTol);  // get nearest points
+    std::vector<int> nearest = tree->search(points[indice], distanceTol);  // get the nearest points
 
     // iterate through nearest points
     for (int id : nearest)

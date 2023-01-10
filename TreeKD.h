@@ -2,6 +2,8 @@
 // Created by Andrei on 09-Oct-22.
 //
 
+#include <utility>
+
 #include "render/render.h"
 
 #ifndef LIDAR_KDTREE_H
@@ -13,8 +15,8 @@ struct Node{
     Node* left;
     Node* right;
 
-    Node(std::vector<float> arr, int setId)
-            :	point(arr), id(setId), left(NULL), right(NULL)
+    Node(std::vector<float> &arr, int setId)
+            :	point(std::move(arr)), id(setId), left(nullptr), right(nullptr)
     {}
 
     ~Node()
@@ -29,7 +31,7 @@ struct TreeKD
     Node* root;
 
     TreeKD()
-    : root(NULL)
+    : root(nullptr)
     {}
 
     ~TreeKD()
@@ -39,7 +41,7 @@ struct TreeKD
 
     void insertHelper(Node** node, int depth, std::vector<float> point, int id)
     {
-        if (*node == NULL)
+        if (*node == nullptr)
         {
             *node = new Node(point, id);
         }
@@ -59,12 +61,12 @@ struct TreeKD
 
     void insert(std::vector<float> point, int id)
     {
-        insertHelper(&root, 0, point, id);
+        insertHelper(&root, 0, std::move(point), id);
     }
 
     void searchHelper(std::vector<float> target, Node* node, int depth, float distanceTol, std::vector<int>& ids)
     {
-        if (node != NULL)
+        if (node != nullptr)
         {
             if ((node->point[0] >= (target[0] - distanceTol) && node->point[0] <= (target[0] + distanceTol)) &&
                 (node->point[1] >= (target[1] - distanceTol) && node->point[1] <= (target[1] + distanceTol)) &&
@@ -94,7 +96,7 @@ struct TreeKD
     std::vector<int> search(std::vector<float> target, float distanceTol)
     {
         std::vector<int> ids;
-        searchHelper(target, root, 0, distanceTol, ids);
+        searchHelper(std::move(target), root, 0, distanceTol, ids);
         return ids;
     }
 };
