@@ -1,5 +1,8 @@
 //
 // Created by Andrei on 18-Oct-22.
+// This is the Windows functional version of the ikd tree paper
+// The original implementation was using POSIX threads
+// You can see it here: https://github.com/hku-mars/ikd-Tree
 //
 
 #include "Tree_I_KD.h"

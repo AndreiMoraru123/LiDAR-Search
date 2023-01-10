@@ -47,12 +47,12 @@ struct Car
     void render(pcl::visualization::PCLVisualizer::Ptr& viewer) const
     {
         // render bottom of car
-        viewer->addCube(position.x-dimensions.x/2, position.x+dimensions.x/2, position.y-dimensions.y/2, position.y+dimensions.y/2, position.z, position.z+dimensions.z*2/3, color.r, color.g, color.b, name);
+        viewer->addCube((float)position.x-(float)dimensions.x/2, (float)position.x+(float)dimensions.x/2, (float)position.y-(float)dimensions.y/2, (float)position.y+(float)dimensions.y/2, (float)position.z, (float)position.z+(float)dimensions.z*2/3, color.r, color.g, color.b, name);
         viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_REPRESENTATION, pcl::visualization::PCL_VISUALIZER_REPRESENTATION_SURFACE, name);
         viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, color.r, color.g, color.b, name);
         viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_OPACITY, 1.0, name);
         // render top of car
-        viewer->addCube(position.x-dimensions.x/4, position.x+dimensions.x/4, position.y-dimensions.y/2, position.y+dimensions.y/2, position.z+dimensions.z*2/3, position.z+dimensions.z, color.r, color.g, color.b, name+"Top");
+        viewer->addCube((float)position.x-(float)dimensions.x/4, (float)position.x+(float)dimensions.x/4, (float)position.y-(float)dimensions.y/2, (float)position.y+(float)dimensions.y/2, (float)position.z+(float)dimensions.z*2/3, (float)position.z+(float)dimensions.z, color.r, color.g, color.b, name+"Top");
         viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_REPRESENTATION, pcl::visualization::PCL_VISUALIZER_REPRESENTATION_SURFACE, name+"Top");
         viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, color.r, color.g, color.b, name+"Top");
         viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_OPACITY, 1.0, name+"Top");
