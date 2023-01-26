@@ -28,12 +28,12 @@ Assuming k = 2 dimensions, below is a short demo
 </p>
 
 1. The first inserted node, (3,6) will be the root. 
-2. To insert (17,15), we have to compare it along the X axis with (3,6). Since 17 > 3, we insert it to the RIGHT
-3. To insert (13,16), we have to compare it along the X axis with (3,6), as well as the Y axis of (17,15). Since 13 > 3 and 16 > 15, we insert it to the RIGHT of (17,15)
-4. To insert (6,12), we have to compare it along the X axis with (3,6), as well as Y of (17,15). Since 6 > 3 and 6 < 15, we insert it to the LEFT of (17,15)
-5. To insert (9,1), we compare it with X of (3,6), Y of (17,15) and X of (6,12). Since 9 > 3 and 1 < 15 and 9 > 6, it goes to the RIGHT of (6,2)
-6. To insert (10,19) we compare it with X of (3,6), Y of (17,15) and X of (13,15). Since 10 > 3 and 19 > 15 and 10 < 13, it goes to the LEFT of (13,15)
-7. Lastly, to insert (2,7), we compare it to the X of (3,6), and since 2 < 7, we put it to the LEFT of the root node.
+2. To insert (17,15), we have to compare it along the X axis with (3,6). Since 17 > 3, we insert it to the `RIGHT`
+3. To insert (13,16), we have to compare it along the X axis with (3,6), as well as the Y axis of (17,15). Since 13 > 3 and 16 > 15, we insert it to the `RIGHT` of (17,15)
+4. To insert (6,12), we have to compare it along the X axis with (3,6), as well as Y of (17,15). Since 6 > 3 and 6 < 15, we insert it to the `LEFT` of (17,15)
+5. To insert (9,1), we compare it with X of (3,6), Y of (17,15) and X of (6,12). Since 9 > 3 and 1 < 15 and 9 > 6, it goes to the `RIGHT` of (6,2)
+6. To insert (10,19) we compare it with X of (3,6), Y of (17,15) and X of (13,15). Since 10 > 3 and 19 > 15 and 10 < 13, it goes to the `LEFT` of (13,15)
+7. Lastly, to insert (2,7), we compare it to the X of (3,6), and since 2 < 7, we put it to the `LEFT` of the root node.
 
 ### Searching
 
@@ -45,9 +45,9 @@ Since at every step we get rid of one dimension (either X or Y), we make twice t
 
 To look up (10,19) for instance, we:
 
-1. Eliminate the LEFT side (2,7) of the tree from the root since 10 > 3 and only search to the RIGHT
-2. Eliminate the LEFT side (6,12) -> (9,1) of the subtree having the root (17,15), since 19 > 15 and only search to the RIGHT
-3. Find (10,19) to the LEFT side the subtree having the root (13,15)
+1. Eliminate the `LEFT` side (2,7) of the tree from the root since 10 > 3, and proceed to only search to the `RIGHT`
+2. Eliminate the `LEFT` side (6,12) -> (9,1) of the subtree having the root (17,15) since 19 > 15, and proceed to only search to the `RIGHT`
+3. Find (10,19) to the `LEFT` side the subtree having the root (13,15)
 
 [Here is a more in depth example using the same numbers](https://www.geeksforgeeks.org/k-dimensional-tree/)
 
