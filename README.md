@@ -97,7 +97,8 @@ There is a lot more info to be found at the original [repo](https://github.com/m
 > vcpkg install pcl[vtk]:x64-windows --featurepackages --recurse
 ```
 
-If you do not explicitly declare an x64 build, vcpkg will default it to x86 and cmake will probably fail.
+> **Warning**
+> If you do not explicitly declare an x64 build, vcpkg will default it to x86 and cmake will probably fail.
 
 * Next you need to specify the toolchain path to the cmake file
 
