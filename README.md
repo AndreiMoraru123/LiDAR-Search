@@ -87,7 +87,7 @@ This is extremly useful for segmenting out the drivable plane/road in three dime
 
 ![trackFPS](https://user-images.githubusercontent.com/81184255/196663177-86203a3d-8bd7-43cb-bf86-57653f0c4ec0.gif)
 
-## ___Painless___ installation of the Point Cloud Library on Windows (if you want to try out this code):
+## ___Painless___ installation of the Point Cloud Library on Windows [![Vcpkg](https://skillicons.dev/icons?i=visualstudio)](https://github.com/microsoft/vcpkg) (if you want to try out this code):
 
 * Install vcpkg, the Microsoft unofficial C++ package manager
 
