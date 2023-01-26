@@ -8,6 +8,9 @@
 
 ## Radius tree search
 
+> **Note**
+> As you can see below, the tree building time is still the bottleneck for my approach, as I am not making full use of the incremental functionality. Any idea that comes as either an issue or pull request in this regard is highly appreciated.  
+
 ![radius](https://user-images.githubusercontent.com/81184255/196661465-795fb331-f0dd-436b-b8a8-97bd616e75e1.gif)
 
 ## Box tree search
