@@ -7,7 +7,7 @@
 
 using PointType = pcl::PointXYZ;
 using PointVector = KD_TREE<PointType>::PointVector;
-//template class KD_TREE<pcl::PointXYZ>;
+
 
 void initializeCamera(CameraAngle setAngle, pcl::visualization::PCLVisualizer::Ptr& viewer)
 {
@@ -81,10 +81,10 @@ void RadiusVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCl
 
     PointType ball_center_pt;
     ball_center_pt.x = 0.0;
-    ball_center_pt.y = 0;
-    ball_center_pt.z = 0;
+    ball_center_pt.y = 0.0;
+    ball_center_pt.z = 0.0;
 
-    float radius = 10;
+    float radius = 10.0;
 
     start = std::chrono::high_resolution_clock::now();
     PointVector SearchedPointsRadius;
@@ -153,11 +153,13 @@ void BoxVision( pcl::visualization::PCLVisualizer::Ptr viewer, ProcessPointCloud
     std::cout << "Number of points: " << kdtree.validnum() << std::endl;
 
     PointType center_pt;
-    center_pt.x = 0.0;
+    center_pt.x = 10.0;
     center_pt.y = 0.0;
     center_pt.z = 0.0;
+
     BoxPointType boxpoint{};
     std::vector<float> box_lengths = {10.00, 10.00, 10.00};
+
     generate_box(boxpoint, center_pt, box_lengths);
 
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr searched_colored(new pcl::PointCloud<pcl::PointXYZRGB>);

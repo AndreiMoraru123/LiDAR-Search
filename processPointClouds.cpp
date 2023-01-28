@@ -246,7 +246,7 @@ typename std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointClo
         float b = (z2 - z1) * (x3 - x1) - (x2 - x1) * (z3 - z1);
         float c = (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1);
         float d = -(a * x1 + b * y1 + c * z1);
-        const float norm = sqrt(a * a + b * b + c * c);
+        float norm = sqrt(a * a + b * b + c * c);
 
         for (int index = 0; index < cloud->points.size(); index++) {
             if (inliers.count(index) > 0)  // if point is already in inliers set, skip
@@ -257,7 +257,7 @@ typename std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointClo
             float y4 = point.y;
             float z4 = point.z;
 
-            // Measure distance between every point and fitted line
+            // Measure distance between every point and fitted plane
             float dist = fabs(a * x4 + b * y4 + c * z4 + d) / norm;
 
             if (dist <= distanceThreshold)  // If distance is smaller than threshold count it as inlier

@@ -39,7 +39,7 @@ struct TreeKD
         delete root;
     }
 
-    void insertHelper(Node** node, int depth, std::vector<float> point, int id)
+    void insertHelper(Node** node, int depth, std::vector<float>& point, int id)
     {
         if (*node == nullptr)
         {
@@ -61,10 +61,10 @@ struct TreeKD
 
     void insert(std::vector<float> point, int id)
     {
-        insertHelper(&root, 0, std::move(point), id);
+        insertHelper(&root, 0, point, id);
     }
 
-    void searchHelper(std::vector<float> target, Node* node, int depth, float distanceTol, std::vector<int>& ids)
+    void searchHelper(std::vector<float>& target, Node* node, int depth, float distanceTol, std::vector<int>& ids) const
     {
         if (node != nullptr)
         {
@@ -93,10 +93,10 @@ struct TreeKD
 
     }
 
-    std::vector<int> search(std::vector<float> target, float distanceTol)
+    [[nodiscard]] std::vector<int> search(std::vector<float> target, float distanceTol) const
     {
         std::vector<int> ids;
-        searchHelper(std::move(target), root, 0, distanceTol, ids);
+        searchHelper(target, root, 0, distanceTol, ids);
         return ids;
     }
 };
