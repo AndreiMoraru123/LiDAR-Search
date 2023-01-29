@@ -136,8 +136,8 @@ It looks like this for me (CLion):
 }
 ```
 
-#### and original IKD-Tree repo:
+#### and original repos:
 
-https://github.com/hku-mars/ikd-Tree
+[ikd-Tree](https://github.com/hku-mars/ikd-Tree)
 
-
+[LiDAR](https://github.com/awbrown90/SFND_Lidar_Obstacle_Detection)
