@@ -21,6 +21,17 @@ jobs:
         git clone https://github.com/microsoft/vcpkg.git
         .\vcpkg\bootstrap-vcpkg.bat
 
+    - name: Update vcpkg repository
+      working-directory: vcpkg
+      run: |
+        git fetch --all --prune
+        git checkout master
+        git pull
+
+    - name: Update vcpkg ports
+      run: |
+        .\vcpkg\vcpkg.exe update
+
     - name: Install PCL
       run: |
         .\vcpkg\vcpkg.exe install pcl:x64-windows
